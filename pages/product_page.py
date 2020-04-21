@@ -18,17 +18,16 @@ class ProductPage(BasePage):
         return price_order
 
     def find_order_name_complete(self, name_order: str):
-        try:
-            # Успешность добавляния в корзину
-            self.browser.find_element_by_xpath(
-                f'//*[@class="alertinner "]'
-                f'/*[contains(text(),"{name_order}")]')
-        except Exception:
-            raise Exception(f'Название товара не совпадает - {name_order}')
+        # Успешность добавляния в корзину
+        name_result = self.browser.find_element_by_xpath(
+            f'//*[@class="alertinner "]'
+            f'/*[contains(text(),"{name_order}")]').text
+        assert name_result == name_order,\
+            'Название товара в корзине не совпадает с искомым'
 
     def find_order_price_complete(self, price_order: str):
         # Успешность добавляния в корзину
         price_result = self.browser.find_element_by_xpath(
             f'//*[@class="alertinner "]/p/strong').text
         assert price_result == price_order,\
-            'Цена товара в корзине не совпадает с ценой товара'
+            'Цена товара в корзине не совпадает с искомой'
